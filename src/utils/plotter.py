@@ -2,10 +2,22 @@ import networkx as nx
 from matplotlib import pyplot as plt
 
 
-# array of status of each node and the graph
-def plot_network_status():
+# array of arrays of status of each node and the nx.Graph
+def plot_network_status(array_of_status_in_each_time, G, title="", show=False):
     # identify the state of each node and create two partitions of the graph: S and I. Plot with different colors
     # the partitions.
+    # index of the status -> index of the node
+    for idx, array_of_status in enumerate(array_of_status_in_each_time):
+        color_map = []
+        for node in array_of_status:
+            if node == 0:
+                color_map.append('blue')
+            else:
+                color_map.append('red')
+        nx.draw(G, node_color=color_map, with_labels=True)
+        plt.savefig(f"out/networks_states/STATUS-(t={idx})-{title}.png")
+        if show: plt.show()
+
     pass
 
 
@@ -46,8 +58,10 @@ def plot_r_b(b, rho_MC, mu_list, title="", show=False):
 def plot_network(g, title='', width=0.1, node_size=10, save=True, show=False):
     plt.clf()
     plt.title(title)
-    nx.draw(g, node_size=node_size, width=width)
+    pos = nx.kamada_kawai_layout(g, weight=None)
+    nx.draw(g, pos,  node_size=node_size, width=width)
+
     if show: plt.show()
     if save:
-        plt.savefig(f"out/network_plots/{title}.png")
+        plt.savefig(f"out/networks_plots/{title}.png")
         nx.write_pajek(g, f'out/networks/{title}.net')

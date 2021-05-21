@@ -1,2 +1,6 @@
 CN-PJ.iml
+src/networkgenerator/__pycache__/
+src/utils/__pycache__/
 .idea
+src/networkgenerator/__pycache__/*
+src/utils/__pycache__/*
