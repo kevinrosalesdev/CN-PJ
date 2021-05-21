@@ -24,7 +24,7 @@ Division [BEFORE NEXT SUNDAY]:
 - Network generation/finding [Alex/Kevin]
     - Alex: parsing graphs.
     - Alex/Kevin: isolated nodes problem.
-    - Generating Scale-Free networks (w/o nodes problem) and save graphs.
+    - Generating Scale-Free networks (w/o nodes problem)
 - Script for testing [All]
     - Done meanwhile programming.
 - Defending strategy [Kevin]:
