@@ -1,5 +1,5 @@
 import networkx as nx
-import utils.read_mtx
+import utils.read_mtx as reader
 import random as rd
 import src.utils.plotter as plotter
 
@@ -10,15 +10,17 @@ if __name__ == '__main__':
     #k_seq = [int(k) for k in k_seq]
     #g = cm.generate_CM(k_seq)
 
+
     # This is a sample graph
-    G = er.generate_ER(50, 0.2)
+    #G = er.generate_ER(50, 0.2)
+    G = reader.read_mtx_file('out/networks/tech-routers-rf.mtx')
 
     # change the label of the nodes (just in case they have some kind of name). Transformed will be 0,1,2...
     G_abstract_name = [idx for idx in range(1, len(G.nodes) + 1)]
     labels = dict(zip(G.nodes, G_abstract_name))
     G = nx.relabel_nodes(G, labels)
 
-    plotter.plot_network(G, title="test",save=False,show=True)
+    plotter.plot_network(G, title="tech-routers-rf",save=True,show=True)
     # very cutre simulator.
     historic = []
     status = [0] * len(list(G.nodes))

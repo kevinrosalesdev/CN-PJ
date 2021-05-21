@@ -3,7 +3,7 @@ from os import remove
 from networkx import Graph
 
 
-def read_mtx_file(filename:str) -> Graph:
+def read_mtx_file(filename:str, keep_directed = False) -> Graph:
 	# preprocess the file. Remove the two first lines of the header as they are for 
 	# explanatory purposes only (not part of the graph!!!). THIS ONLY WORKS WITH MTX FILES FROM
 	# networkrepository.com
@@ -19,7 +19,9 @@ def read_mtx_file(filename:str) -> Graph:
 	remove(f'{filename}_clean.mtx') 
 	
 	# returns a networkx graph.
-	return g.to_networkx()
+	if keep_directed:
+		return g.to_networkx()
+	return g.to_networkx().to_undirected()
 	
 # uncomment for debugging purposes.
 #read_mtx_file("test.mtx")

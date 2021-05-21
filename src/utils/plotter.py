@@ -63,5 +63,5 @@ def plot_network(g, title='', width=0.1, node_size=10, save=True, show=False):
 
     if show: plt.show()
     if save:
-        plt.savefig(f"out/networks_plots/{title}.png")
+        plt.savefig(f"out/networks-plots/{title}.png")
         nx.write_pajek(g, f'out/networks/{title}.net')
