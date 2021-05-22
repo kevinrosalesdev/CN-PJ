@@ -4,7 +4,7 @@ import initialState
 import strategies
 
 
-class monteCarlo:
+class MonteCarlo:
 
     def __init__(self,
                  G: nx.Graph,
@@ -12,7 +12,7 @@ class monteCarlo:
                  beta_random: float,
                  mu: float,
                  n_rep: int = 50,
-                 inital_fnc: str = 'default',
+                 inital_fnc: str = 'random',
                  initial_ratio: float = 0.1,
                  protection_policy: str = 'hubs',
                  protection_ratio: float = 0.1,
@@ -31,18 +31,22 @@ class monteCarlo:
         self.protection_policy = protection_policy
         self.protection_ratio = protection_ratio
 
-
     def run_simulations(self):
         simulation_results = []
-        time_fracs = {}
+        extended_simulation_results = []
+        node_status = []
 
+        protected = strategies.get_nodes(self.G, self.protection_ratio, self.protection_policy)
 
+        for rep in range(self.n_rep):
+            simulation, status = self.single_simulation(protected)
+            extended_simulation_results.append(simulation)
+            simulation_results.append(np.average(simulation[self.n_max-self.n_trans:]))
+            node_status.append(status)
 
+        return simulation_results, extended_simulation_results, node_status
 
-
-
-
-    def compute_spreading(self, protected: list):
+    def single_simulation(self, protected: list):
         '''
         Run a single execution of a SIR model and returns
         Node states options:
@@ -57,6 +61,7 @@ class monteCarlo:
         next_node_status = node_status.copy()
 
         output = []
+        output_status = [node_status]
 
         for i in range(self.n_max):
             for idx_node in range(n):
@@ -75,8 +80,10 @@ class monteCarlo:
 
                 # If node is infected
                 elif node_status[idx_node] == 1:
+                    pass
                     # Recovery
-                    next_node_status[idx_node] = 2 * node_status * (np.random.rand(1) > self.mu)
+                    #recovered = (np.random.rand(1) > self.mu)
+                    #next_node_status[idx_node] = 2 * node_status[idx_node] * (np.random.rand(1) > self.mu)
 
                 # If node is recovery
                 # elif node_status[idx_node] == 2:
@@ -87,5 +94,6 @@ class monteCarlo:
             # Save information iteration & update node_status
             node_status = next_node_status
             output.append(np.count_nonzero(node_status == 1) / n)
+            output_status.append(node_status.copy())
 
-        return output
+        return output, output_status
