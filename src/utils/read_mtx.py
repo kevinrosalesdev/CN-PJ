@@ -53,4 +53,5 @@ def read_mtx_file(filename: str) -> Graph:
 	return g
 	
 # uncomment for debugging purposes.
-# read_mtx_file("test.mtx")
+
+#nx.write_pajek(read_mtx_file("176bit.mtx"), f'../../out/networks/huge.net')

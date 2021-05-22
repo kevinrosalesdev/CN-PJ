@@ -4,3 +4,4 @@ src/utils/__pycache__/
 .idea
 src/networkgenerator/__pycache__/*
 src/utils/__pycache__/*
+out/networks/huge.net
