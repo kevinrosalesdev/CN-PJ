@@ -82,8 +82,7 @@ class MonteCarlo:
                 elif node_status[idx_node] == 1:
                     pass
                     # Recovery
-                    #recovered = (np.random.rand(1) > self.mu)
-                    #next_node_status[idx_node] = 2 * node_status[idx_node] * (np.random.rand(1) > self.mu)
+                    next_node_status[idx_node] = 2 * node_status[idx_node] * (np.random.rand(1) > self.mu)
 
                 # If node is recovery
                 # elif node_status[idx_node] == 2:
