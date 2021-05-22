@@ -16,9 +16,8 @@ def plot_network_status(array_of_status_in_each_time, G, title="", show=False):
                 color_map.append('red')
         nx.draw(G, node_color=color_map, with_labels=True)
         plt.savefig(f"out/networks_states/STATUS-(t={idx})-{title}.png")
-        if show: plt.show()
-
-    pass
+        if show:
+            plt.show()
 
 
 # plots the fraction of infected nodes in the network at each time. (Montecarlo with several realizations)
@@ -36,7 +35,8 @@ def plot_r_t(t_max: int, rho:list, b:list, title, show=False):
     plt.ylabel('ρ')
     plt.legend([f"β={b_value}" for b_value in b])
     plt.savefig(f"out/{title}")
-    if show: plt.show()
+    if show:
+        plt.show()
 
 
 def plot_r_b(b, rho_MC, mu_list, title="", show=False):
@@ -52,7 +52,8 @@ def plot_r_b(b, rho_MC, mu_list, title="", show=False):
     plt.legend()
     plt.title(title)
     plt.savefig(f"out/{title}")
-    if show: plt.show()
+    if show:
+        plt.show()
 
 
 def plot_network(g, title='', width=0.1, node_size=10, save=True, show=False):
@@ -61,7 +62,32 @@ def plot_network(g, title='', width=0.1, node_size=10, save=True, show=False):
     pos = nx.kamada_kawai_layout(g, weight=None)
     nx.draw(g, pos,  node_size=node_size, width=width)
 
-    if show: plt.show()
+    if show:
+        plt.show()
     if save:
         plt.savefig(f"out/networks-plots/{title}.png")
         nx.write_pajek(g, f'out/networks/{title}.net')
+
+def plot_percolation(p, size_of_gcc_record, size_of_slcc_record, title=''):
+    plt.clf()
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    ax1.plot(p, size_of_gcc_record)
+    ax1.set_ylabel('gcc')
+
+    ax2 = ax1.twinx()
+    ax2.plot(p, size_of_slcc_record, 'r-')
+    ax2.set_ylabel('slcc', color='r')
+    for tl in ax2.get_yticklabels():
+        tl.set_color('r')
+
+
+    plt.title(title)
+    #plt.plot(p, size_of_gcc_record, '-o')
+    #plt.plot(p, size_of_slcc_record, '-x')
+    #plt.xlabel('p')
+    #plt.ylabel('GCC')
+    #plt.legend([f"β={b_value}" for b_value in b])
+    #plt.savefig(f"out/{title}")
+    #if show:
+    plt.show()
