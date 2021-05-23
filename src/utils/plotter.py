@@ -10,10 +10,14 @@ def plot_network_status(array_of_status_in_each_time, G, title="", show=False):
     for idx, array_of_status in enumerate(array_of_status_in_each_time):
         color_map = []
         for node in array_of_status:
-            if node == 0:
+            if node == 0: # node susceptible
                 color_map.append('blue')
-            else:
+            elif node == 1: # node infected
                 color_map.append('red')
+            elif node == 2: # state: 2 - node recovered
+                color_map.append('green')
+            else:
+                color_map.append('black') # state: 3 - protected
         nx.draw(G, node_color=color_map, with_labels=True)
         plt.savefig(f"out/networks_states/STATUS-(t={idx})-{title}.png")
         if show:
