@@ -48,7 +48,7 @@ class MonteCarlo:
 
     def single_simulation(self, protected: list):
         '''
-        Run a single execution of a SIR model and returns
+        Run a single execution of a SIR model and returns both the infection rate and the status of the nodes for each iteration
         Node states options:
         0 -> Susceptible
         1 -> Infected
@@ -81,10 +81,13 @@ class MonteCarlo:
                 # If node is infected
                 elif node_status[idx_node] == 1:
                     pass
-                    # Recovery
+                    # Recovery depending on neighbors
                     # If random number < self.mu -> Node has recovered -> New status = 2 (1+1)
                     # If random number > self.mu -> Node has not recovered and is still infected -> Status still 1 (0+1)
-                    next_node_status[idx_node] = (np.random.rand(1) < self.mu) + 1
+                    idx_neighbors = list(self.G.neighbors(idx_node))
+                    ratio_infected_neigbors = len(np.count_nonzero(node_status[idx_neighbors] == 1)) / len(idx_neighbors)
+
+                    next_node_status[idx_node] = (np.random.rand(1) < self.mu * ratio_infected_neigbors) + 1
 
                 # If node is recovery
                 # elif node_status[idx_node] == 2:
