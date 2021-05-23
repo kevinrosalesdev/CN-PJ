@@ -93,3 +93,17 @@ def plot_percolation(p, size_of_gcc_record, size_of_slcc_record, title=''):
     # plt.savefig(f"out/{title}")
     # if show:
     plt.show()
+
+
+def plot_histogram(hist:dict, title = 'Degree Histogram'):
+    # format the bins and x axis of the plot
+    minim,maxim = min(hist.keys()), max(hist.keys())
+    x = range(minim, maxim+1)
+    plt.xticks(x, x)
+    # plot
+    plt.bar(hist.keys(), hist.values(), width=1, color='g', edgecolor='black')
+    # further parameters
+    plt.title(title)
+    plt.xlabel('Degree')
+    plt.ylabel('Frequency')
+    plt.show()
