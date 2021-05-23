@@ -41,7 +41,7 @@ class MonteCarlo:
         for rep in range(self.n_rep):
             simulation, status = self.single_simulation(protected)
             extended_simulation_results.append(simulation)
-            simulation_results.append(np.average(simulation[self.n_max-self.n_trans:]))
+            simulation_results.append(np.average(simulation[self.n_trans:]))
             node_status.append(status)
 
         return simulation_results, extended_simulation_results, node_status
@@ -82,7 +82,9 @@ class MonteCarlo:
                 elif node_status[idx_node] == 1:
                     pass
                     # Recovery
-                    next_node_status[idx_node] = 2 * node_status[idx_node] * (np.random.rand(1) > self.mu)
+                    # If random number < self.mu -> Node has recovered -> New status = 2 (1+1)
+                    # If random number > self.mu -> Node has not recovered and is still infected -> Status still 1 (0+1)
+                    next_node_status[idx_node] = (np.random.rand(1) < self.mu) + 1
 
                 # If node is recovery
                 # elif node_status[idx_node] == 2:
@@ -90,7 +92,7 @@ class MonteCarlo:
                 # If node is protected
                 # elif node_status[idx_node] == 3:
 
-            # Save information iteration & update node_status
+            # Save information about iteration & update node_status
             node_status = next_node_status
             output.append(np.count_nonzero(node_status == 1) / n)
             output_status.append(node_status.copy())
