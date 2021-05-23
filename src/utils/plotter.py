@@ -74,21 +74,22 @@ def plot_percolation(p, size_of_gcc_record, size_of_slcc_record, title=''):
     plt.clf()
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
-    ax1.plot(p, size_of_gcc_record)
+    ax1.plot(p, size_of_gcc_record, '-o')
     ax1.set_ylabel('gcc')
+    ax1.set_xlabel('p')
 
     ax2 = ax1.twinx()
-    ax2.plot(p, size_of_slcc_record, 'r-')
-    ax2.set_ylabel('slcc', color='r')
+    ax2.plot(p, size_of_slcc_record, 'grey', alpha=0.8)
+    ax2.set_ylabel('slcc')
     for tl in ax2.get_yticklabels():
-        tl.set_color('r')
+        tl.set_color('black')
 
     plt.title(title)
     # plt.plot(p, size_of_gcc_record, '-o')
     # plt.plot(p, size_of_slcc_record, '-x')
-    # plt.xlabel('p')
+    plt.xlabel('p')
     # plt.ylabel('GCC')
-    # plt.legend([f"β={b_value}" for b_value in b])
+    #plt.legend(['GCC', 'SLCC'])
     # plt.savefig(f"out/{title}")
     # if show:
     plt.show()

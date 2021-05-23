@@ -33,7 +33,7 @@ def simulate_percolation(G, p:list = None):
             size_of_slcc_per_p.append(len(list(find_slcc(G))) / len(list(G.nodes)))
         except:
             size_of_slcc_per_p.append(0)
-    plot_percolation(p, size_of_gcc_per_p, size_of_slcc_per_p)
+    plot_percolation(p, size_of_gcc_per_p, size_of_slcc_per_p, title='Percolation of Network')
 
 
 def remove_fraction_random(G, p):
