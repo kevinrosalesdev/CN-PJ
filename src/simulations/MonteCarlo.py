@@ -85,9 +85,11 @@ class MonteCarlo:
                     # If random number < self.mu -> Node has recovered -> New status = 2 (1+1)
                     # If random number > self.mu -> Node has not recovered and is still infected -> Status still 1 (0+1)
                     idx_neighbors = list(self.G.neighbors(idx_node))
-                    ratio_infected_neigbors = len(np.count_nonzero(node_status[idx_neighbors] == 1)) / len(idx_neighbors)
+                    # Healthy neighbors are the number of neighbors minus the one infected
+                    num_healthy_neighbors = len(idx_neighbors) - np.count_nonzero(node_status[idx_neighbors] == 1)
+                    ratio_healthy_neigbors = num_healthy_neighbors / len(idx_neighbors)
 
-                    next_node_status[idx_node] = (np.random.rand(1) < self.mu * ratio_infected_neigbors) + 1
+                    next_node_status[idx_node] = (np.random.rand(1) < self.mu * ratio_healthy_neigbors) + 1
 
                 # If node is recovery
                 # elif node_status[idx_node] == 2:
