@@ -1,7 +1,7 @@
 import numpy as np
 import networkx as nx
-import initialState
-import strategies
+from simulations import initialState
+from strategies import strategies
 
 
 class MonteCarlo:
@@ -40,9 +40,12 @@ class MonteCarlo:
 
         for rep in range(self.n_rep):
             simulation, status = self.single_simulation(protected)
+            # Maximum Rho of the iterations(b)
             extended_simulation_results.append(simulation)
             simulation_results.append(np.average(simulation[self.n_trans:]))
             node_status.append(status)
+
+        # np.average(Maximum Rho of the iterations)(b) [50 values -> 1 per beta]
 
         return simulation_results, extended_simulation_results, node_status
 
@@ -80,7 +83,6 @@ class MonteCarlo:
 
                 # If node is infected
                 elif node_status[idx_node] == 1:
-                    pass
                     # Recovery depending on neighbors
                     # If random number < self.mu -> Node has recovered -> New status = 2 (1+1)
                     # If random number > self.mu -> Node has not recovered and is still infected -> Status still 1 (0+1)

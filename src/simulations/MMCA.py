@@ -46,7 +46,7 @@ class MMCA:
                                 for idx in range(len(old_prob))])
                 prob = np.array([1.0 if random.random() < self.random_infection else prob_value for prob_value in prob])
                 prob[beta_protected_nodes] = 0
-                beta_protected_nodes = np.unique(np.concatenate((beta_protected_nodes, np.where(prob < 1E-03)[0])))
+                # beta_protected_nodes = np.unique(np.concatenate((beta_protected_nodes, np.where(prob < 0.1)[0])))
                 rho_history.append(_get_rho(prob))
             rho_history_bvalue.append(rho_history)
 
