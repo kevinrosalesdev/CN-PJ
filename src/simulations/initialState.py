@@ -13,6 +13,9 @@ def get_initial_state(number_nodes: int, protected: list, ratio: float = 0.1,  p
     :return: an array with the initial status of each node of the graph
     '''
     initial_state = np.zeros(number_nodes)
+
+    protected = [int(x) for x in protected]
+
     initial_state[protected] = 3
 
     idx = np.array(list(range(number_nodes)))

@@ -35,23 +35,20 @@ if __name__ == '__main__':
     graph_path = 'out/networks/tech-routers-rf.net'
 
     betas = np.arange(0.0, 1.02, 0.02)
-    mus = [0.1, 0.3, 0.5]
+    mus = [0.05]
 
     # Input
     G = nx.Graph(nx.read_pajek(graph_path))
     beta_random = 0.05
-    n_rep = 3 # 50
+    n_rep = 1 # 50
     initial_function = 'random'
     initial_ratio = 0.1
     protection_policy = 'hubs'
     protection_ratio = 0.1
-    n_max = 1000
-    n_trans = 900
+    n_max = 10
+    n_trans = 5
 
-    betas = [0.2, 0.3]
-    mus = [0.3, 0.5]
-
-    title = '/monteCarlo/test'
+    title = 'simulations/monteCarlo/test.png'
     names = ['test1', 'test2']
 
     all_results = []
