@@ -31,7 +31,11 @@ class MonteCarlo:
         self.protection_policy = protection_policy
         self.protection_ratio = protection_ratio
 
-    def run_simulations(self):
+    def run_simulations(self, mode: str = 'SIR'):
+        if mode != 'SIR' or mode != 'SIS':
+            print("[WARNING] Mode selected for simulation is not valid. Please choose between SIR and SIS.")
+            return [], [], []
+
         simulation_results = []
         extended_simulation_results = []
         node_status = []
@@ -39,7 +43,7 @@ class MonteCarlo:
         protected = strategies.get_nodes(self.G, self.protection_ratio, self.protection_policy)
 
         for rep in range(self.n_rep):
-            simulation, status = self.single_simulation(protected)
+            simulation, status = self.single_simulation(protected, mode=mode)
             # Maximum Rho of the iterations(b)
             extended_simulation_results.append(simulation)
             simulation_results.append(np.average(simulation[self.n_trans:]))
@@ -49,7 +53,7 @@ class MonteCarlo:
 
         return simulation_results, extended_simulation_results, node_status
 
-    def single_simulation(self, protected: list):
+    def single_simulation(self, protected: list, mode: str):
         '''
         Run a single execution of a SIR model and returns both the infection rate and the status of the nodes for each iteration
         Node states options:
@@ -91,7 +95,11 @@ class MonteCarlo:
                     num_healthy_neighbors = len(idx_neighbors) - np.count_nonzero(node_status[idx_neighbors] == 1)
                     ratio_healthy_neigbors = num_healthy_neighbors / len(idx_neighbors)
 
-                    next_node_status[idx_node] = (np.random.rand(1) < self.mu * ratio_healthy_neigbors) + 1
+                    if mode == 'SIR':
+                        next_node_status[idx_node] = (np.random.rand(1) < self.mu * ratio_healthy_neigbors) + 1
+
+                    elif mode == 'SIS':
+                        next_node_status[idx_node] = next_node_status[idx_node] * np.random.rand(1) > self.mu
 
                 # If node is recovery
                 # elif node_status[idx_node] == 2:

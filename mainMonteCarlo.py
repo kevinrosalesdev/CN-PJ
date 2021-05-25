@@ -33,6 +33,8 @@ if __name__ == '__main__':
 
     graph_path = 'out/networks/tech-routers-rf.net'
 
+    mode = 'SIS' # SIS or SIR
+
     betas = np.arange(0.0, 1.02, 0.02)
     mus = [0.1, 0.5, 0.9]
 
@@ -73,7 +75,7 @@ if __name__ == '__main__':
 
             print(f'Running with mu = {mu}, beta = {beta}')
 
-            simulation_results, extended_simulation_results, _ = MC.run_simulations()
+            simulation_results, extended_simulation_results, _ = MC.run_simulations(mode=mode)
 
             results.append(np.mean(simulation_results))
             results_csv.append(simulation_results)
