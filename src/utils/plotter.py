@@ -1,4 +1,5 @@
 import networkx as nx
+import numpy as np
 from matplotlib import pyplot as plt
 
 
@@ -71,10 +72,10 @@ def plot_network(g, title='', width=0.1, node_size=10, save=True, show=False):
         plt.show()
     if save:
         plt.savefig(f"out/networks-plots/{title}.png")
-        nx.write_pajek(g, f'out/networks/{title}.net')
+        #nx.write_pajek(g, f'out/networks/{title}.net')
 
 
-def plot_percolation(p, size_of_gcc_record, size_of_slcc_record, title=''):
+def plot_percolation(p, size_of_gcc_record, size_of_slcc_record, title='', show=False):
     plt.clf()
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
@@ -95,19 +96,23 @@ def plot_percolation(p, size_of_gcc_record, size_of_slcc_record, title=''):
     # plt.ylabel('GCC')
     #plt.legend(['GCC', 'SLCC'])
     # plt.savefig(f"out/{title}")
-    # if show:
-    plt.show()
+    plt.savefig(f"out/percolation_graphs/{title}.png")
+    if show: plt.show()
 
 
-def plot_histogram(hist:dict, title = 'Degree Histogram'):
+def plot_histogram(hist:dict , title = 'Degree Histogram', show=False):
     # format the bins and x axis of the plot
     minim,maxim = min(hist.keys()), max(hist.keys())
     x = range(minim, maxim+1)
     plt.xticks(x, x)
+
     # plot
     plt.bar(hist.keys(), hist.values(), width=1, color='g', edgecolor='black')
     # further parameters
     plt.title(title)
     plt.xlabel('Degree')
     plt.ylabel('Frequency')
-    plt.show()
+    plt.savefig(f"out/degree-histograms/{title}.png")
+    if show: plt.show()
+
+

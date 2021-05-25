@@ -47,7 +47,7 @@ if __name__ == '__main__':
     n_max = 1000
     n_trans = 900
 
-    title = 'simulations/monteCarlo/tech-routers-rf.png'
+    title = 'simulations/monteCarlo/tech-routers-rfor.png'
     names = ['test1', 'test2']
 
     all_results = []

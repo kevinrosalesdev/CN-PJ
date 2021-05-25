@@ -47,4 +47,4 @@ def remove_fraction_random(G, p):
 
 #find_gcc(nx.read_pajek('../../out/networks/test.net'))
 #find_gcc(nx.erdos_renyi_graph(100, 0.5))
-simulate_percolation(nx.read_pajek('../../out/networks/huge.net'))
+#simulate_percolation(nx.read_pajek('../../out/networks/test.net'))

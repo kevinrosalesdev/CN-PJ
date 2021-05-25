@@ -1,20 +1,41 @@
 import networkx as nx, pandas as pd
 import numpy as np
-
-from plotter import plot_histogram
+from matplotlib import pyplot as plt
+from utils.plotter import plot_histogram
 
 
 '''Returns a dictionary {degree:occurrences} for each degree available
 in the graph. If specified, plots the histogram.'''
 
-def degree_histogram(G, plot=False) -> dict:
+def degree_histogram(G, plot=False, log = True, title = '') -> dict:
     degree_histogram = {}
     for node_deg in G.degree:
         degree = node_deg[1]
         degree_histogram[degree] = degree_histogram.get(degree, 0) + 1
-    if plot:
-        plot_histogram(degree_histogram)
+    # cut for linear
+    if not log: degree_histogram = {k:v for k,v in degree_histogram.items() if k<10}
+    if log:
+        k = [degree for degree in degree_histogram.values()]
+        nbins = 10
+        k_log = np.log10(k)
+        k_min_log = np.log10(np.min(k))
+        k_max_log = np.log10(np.max(k) + 1)
+        intervals = np.linspace(k_min_log, k_max_log, nbins + 1)
+        freq_k_log = [np.where((intervals[i] <= k_log) & (k_log < intervals[i + 1]))[0].shape[0]
+                      for i in range(nbins)]
+        p_b = np.divide(freq_k_log, len(k))
+        x = [(intervals[i] + intervals[i + 1]) / 2 for i in range(len(intervals) - 1)]
+        plt.bar(x, p_b, width=x[1] - x[0], log=log, edgecolor='black')
+        plt.xticks(x, [round(i, 2) for i in x])
+        plt.title(title)
+        plt.xlabel('Degree')
+        plt.ylabel('Frequency (log)')
+        if plot: plt.show()
+        plt.savefig(f"out/degree-histograms/{title}.png")
+
+    else: plot_histogram(degree_histogram, show=plot, title=title)
     return degree_histogram
+
 
 '''Returns a pandas dataframe with the metrics and statistics of each node. Results are rounded as indicated in
 float_depth'''
@@ -54,7 +75,7 @@ def extract_metrics_graph(G, float_depth=4) -> dict:
     statistics['min_degree'] = degree['min']
     statistics['max_degree'] = degree['max']
     statistics['avg_degree'] = degree['avg']
-    statistics['avg_degree'] = get_average_clustering(G, float_depth)
+    statistics['avg_clustering'] = get_average_clustering(G, float_depth)
     statistics['assortativity'] = get_assortativity(G, float_depth)
     statistics['avg_path_length'] = get_average_path_length(G, float_depth)
     statistics['diameter'] = get_diameter(G, float_depth)
@@ -80,7 +101,7 @@ def get_degree(graph, float_depth):
 # clustering coefficient of a node measures how much interconnected
 # it is with its neighbours. C = connections / connections if clique
 def get_average_clustering(graph, float_depth):
-    return round(nx.average_clustering(graph), float_depth)
+    return round(nx.average_clustering(graph), 10)
 
 
 # the preference of the network's nodes to attach to others that are similar
@@ -132,7 +153,7 @@ def get_distances(graph):
 
 ######################################################################################
 # uncomment for debugging purposes
-# _ = degree_histogram(nx.read_pajek('../../out/networks/test.net'), plot=True)
+# _ = degree_histogram(nx.read_pajek('../../out/networks/tech-routers-rf.net'), plot=True, log=False)
 # a = extract_metrics(nx.read_pajek('../../out/networks/test.net').to_undirected())
-a = extract_metrics_graph(nx.read_pajek('../../out/networks/huge.net'))
-print()
+#a = extract_metrics_graph(nx.read_pajek('../../out/networks/huge.net'))
+#print()
