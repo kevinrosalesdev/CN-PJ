@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     graph_path = 'out/networks/tech-routers-rf.net'
 
-    mode = 'SIS' # SIS or SIR
+    mode = 'SIS'  # SIS or SIR
 
     betas = np.arange(0.0, 1.02, 0.02)
     mus = [0.1, 0.5, 0.9]
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # Input
     G = nx.Graph(nx.read_pajek(graph_path))
     beta_random = 0.01
-    n_rep = 1   # 50
+    n_rep = 1  # 50
     initial_function = 'random'
     initial_ratio = 0.1
     protection_policy = 'hubs'
