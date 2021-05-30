@@ -31,29 +31,24 @@ class MonteCarlo:
         self.protection_policy = protection_policy
         self.protection_ratio = protection_ratio
 
-    def run_simulations(self, mode: str = 'SIR'):
-        if mode != 'SIR' or mode != 'SIS':
-            print("[WARNING] Mode selected for simulation is not valid. Please choose between SIR and SIS.")
-            return [], [], []
-
+    def run_simulations(self):
         simulation_results = []
-        extended_simulation_results = []
-        node_status = []
 
         protected = strategies.get_nodes(self.G, self.protection_ratio, self.protection_policy)
 
         for rep in range(self.n_rep):
-            simulation, status = self.single_simulation(protected, mode=mode)
+            if rep % 10 == 0:
+                print(f'Rep: {rep}')
+
+            simulation_output = self.single_simulation(protected)
             # Maximum Rho of the iterations(b)
-            extended_simulation_results.append(simulation)
-            simulation_results.append(np.average(simulation[self.n_trans:]))
-            node_status.append(status)
+            simulation_results.append(simulation_output)
 
         # np.average(Maximum Rho of the iterations)(b) [50 values -> 1 per beta]
 
-        return simulation_results, extended_simulation_results, node_status
+        return simulation_results
 
-    def single_simulation(self, protected: list, mode: str):
+    def single_simulation(self, protected: list):
         '''
         Run a single execution of a SIR model and returns both the infection rate and the status of the nodes for each iteration
         Node states options:
@@ -67,11 +62,14 @@ class MonteCarlo:
         node_status = initialState.get_initial_state(n, protected, ratio=self.initial_ratio, policy=self.initial_fnc)
         next_node_status = node_status.copy()
 
-        output = []
-        output_status = [node_status]
-
         for i in range(self.n_max):
+            # If iteration is over -> No infected nodes left
+            if np.count_nonzero(node_status == 1) == 0:
+                # Exit iteration for -> as no infected node so no possible changes
+                break
+
             for idx_node in range(n):
+
                 # If node is susceptible:
                 if node_status[idx_node] == 0:
                     # Contamination by random
@@ -93,13 +91,9 @@ class MonteCarlo:
                     idx_neighbors = [int(x) for x in list(self.G.neighbors(str(idx_node)))]
                     # Healthy neighbors are the number of neighbors minus the ones infected
                     num_healthy_neighbors = len(idx_neighbors) - np.count_nonzero(node_status[idx_neighbors] == 1)
-                    ratio_healthy_neigbors = num_healthy_neighbors / len(idx_neighbors)
+                    ratio_healthy_neighbors = num_healthy_neighbors / len(idx_neighbors)
 
-                    if mode == 'SIR':
-                        next_node_status[idx_node] = (np.random.rand(1) < self.mu * ratio_healthy_neigbors) + 1
-
-                    elif mode == 'SIS':
-                        next_node_status[idx_node] = next_node_status[idx_node] * np.random.rand(1) > self.mu
+                    next_node_status[idx_node] = (np.random.rand(1) < self.mu * ratio_healthy_neighbors) + 1
 
                 # If node is recovery
                 # elif node_status[idx_node] == 2:
@@ -107,9 +101,9 @@ class MonteCarlo:
                 # If node is protected
                 # elif node_status[idx_node] == 3:
 
-            # Save information about iteration & update node_status
+            # Update node_status
             node_status = next_node_status
-            output.append(np.count_nonzero(node_status == 1) / n)
-            output_status.append(node_status.copy())
 
-        return output, output_status
+        # Computer number of recovered nodes of final state:
+        output = np.count_nonzero(node_status == 2) / n
+        return output

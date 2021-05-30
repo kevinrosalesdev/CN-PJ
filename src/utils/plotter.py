@@ -55,6 +55,7 @@ def plot_r_b(b, rho, mu_list, title="", show=False):
     plt.title(title)
     plt.xlabel('β')
     plt.ylabel('ρ')
+    plt.ylim(0, 1)
     plt.legend()
     plt.title(title)
     plt.savefig(f"out/{title}")
