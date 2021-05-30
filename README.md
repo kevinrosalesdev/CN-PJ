@@ -34,7 +34,7 @@ Division [BEFORE NEXT SUNDAY]:
   * `N/2` hubs and `N/2` with most betweenness [DONE].
 - Algorithm with honeypot implemented
   * Monte-Carlo [Paul] [Average of maximums in SIR].
-  * MMCA [Kevin] [Adapt to SIS].
+  * MMCA [Kevin] [DONE].
 - Visualizing the network [Alex].
   * Status per iteration. [DONE]
   * Graph visualization. [DONE]

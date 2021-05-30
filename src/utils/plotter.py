@@ -11,14 +11,14 @@ def plot_network_status(array_of_status_in_each_time, G, title="", show=False):
     for idx, array_of_status in enumerate(array_of_status_in_each_time):
         color_map = []
         for node in array_of_status:
-            if node == 0: # node susceptible
+            if node == 0:  # node susceptible
                 color_map.append('blue')
-            elif node == 1: # node infected
+            elif node == 1:  # node infected
                 color_map.append('red')
-            elif node == 2: # state: 2 - node recovered
+            elif node == 2:  # state: 2 - node recovered
                 color_map.append('green')
             else:
-                color_map.append('black') # state: 3 - protected
+                color_map.append('black')  # state: 3 - protected
         nx.draw(G, node_color=color_map, with_labels=True)
         plt.savefig(f"out/networks_states/STATUS-(t={idx})-{title}.png")
         if show:
@@ -73,7 +73,7 @@ def plot_network(g, title='', width=0.1, node_size=10, save=True, show=False):
         plt.show()
     if save:
         plt.savefig(f"out/networks-plots/{title}.png")
-        #nx.write_pajek(g, f'out/networks/{title}.net')
+        # nx.write_pajek(g, f'out/networks/{title}.net')
 
 
 def plot_percolation(p, size_of_gcc_record, size_of_slcc_record, title='', show=False):
@@ -95,16 +95,16 @@ def plot_percolation(p, size_of_gcc_record, size_of_slcc_record, title='', show=
     # plt.plot(p, size_of_slcc_record, '-x')
     plt.xlabel('p')
     # plt.ylabel('GCC')
-    #plt.legend(['GCC', 'SLCC'])
+    # plt.legend(['GCC', 'SLCC'])
     # plt.savefig(f"out/{title}")
     plt.savefig(f"out/percolation_graphs/{title}.png")
     if show: plt.show()
 
 
-def plot_histogram(hist:dict , title = 'Degree Histogram', show=False):
+def plot_histogram(hist: dict, title='Degree Histogram', show=False):
     # format the bins and x axis of the plot
-    minim,maxim = min(hist.keys()), max(hist.keys())
-    x = range(minim, maxim+1)
+    minim, maxim = min(hist.keys()), max(hist.keys())
+    x = range(minim, maxim + 1)
     plt.xticks(x, x)
 
     # plot
@@ -115,5 +115,3 @@ def plot_histogram(hist:dict , title = 'Degree Histogram', show=False):
     plt.ylabel('Frequency')
     plt.savefig(f"out/degree-histograms/{title}.png")
     if show: plt.show()
-
-

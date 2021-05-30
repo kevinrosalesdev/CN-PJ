@@ -1,10 +1,10 @@
 CN-PJ.iml
-src/networkgenerator/__pycache__/
-src/utils/__pycache__/
 .idea
 src/networkgenerator/__pycache__/*
 src/utils/__pycache__/*
-out/networks/huge.net
-
 src/simulations/__pycache__/
 src/strategies/__pycache__/
+src/networkgenerator/__pycache__/
+src/utils/__pycache__/
+out/simulations/monteCarlo
+out/networks/huge.net

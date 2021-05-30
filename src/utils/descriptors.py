@@ -3,17 +3,17 @@ import numpy as np
 from matplotlib import pyplot as plt
 from utils.plotter import plot_histogram
 
-
 '''Returns a dictionary {degree:occurrences} for each degree available
 in the graph. If specified, plots the histogram.'''
 
-def degree_histogram(G, plot=False, log = True, title = '') -> dict:
+
+def degree_histogram(G, plot=False, log=True, title='') -> dict:
     degree_histogram = {}
     for node_deg in G.degree:
         degree = node_deg[1]
         degree_histogram[degree] = degree_histogram.get(degree, 0) + 1
     # cut for linear
-    if not log: degree_histogram = {k:v for k,v in degree_histogram.items() if k<10}
+    if not log: degree_histogram = {k: v for k, v in degree_histogram.items() if k < 10}
     if log:
         k = [degree for degree in degree_histogram.values()]
         nbins = 10
@@ -33,12 +33,14 @@ def degree_histogram(G, plot=False, log = True, title = '') -> dict:
         if plot: plt.show()
         plt.savefig(f"out/degree-histograms/{title}.png")
 
-    else: plot_histogram(degree_histogram, show=plot, title=title)
+    else:
+        plot_histogram(degree_histogram, show=plot, title=title)
     return degree_histogram
 
 
 '''Returns a pandas dataframe with the metrics and statistics of each node. Results are rounded as indicated in
 float_depth'''
+
 
 def extract_metrics_each_node(G, float_depth=4) -> pd.DataFrame():
     G = nx.Graph(G)
@@ -62,12 +64,13 @@ def extract_metrics_each_node(G, float_depth=4) -> pd.DataFrame():
                          'pagerank': round(pagerank[node], float_depth)}
     return df
 
-def extract_metrics_graph(G, float_depth=4) -> dict:
-    keys=['nodes', 'edges','min_degree', 'max_degree', 'avg_degree','avg_clustering', 'assortativity',
-          'avg_path_length', 'diameter']
 
-    G = nx.Graph(G) # multigraph to simple undirected graph, otherwise some metrics will not work.
-    statistics = {k:0 for k in keys}
+def extract_metrics_graph(G, float_depth=4) -> dict:
+    keys = ['nodes', 'edges', 'min_degree', 'max_degree', 'avg_degree', 'avg_clustering', 'assortativity',
+            'avg_path_length', 'diameter']
+
+    G = nx.Graph(G)  # multigraph to simple undirected graph, otherwise some metrics will not work.
+    statistics = {k: 0 for k in keys}
 
     degree = get_degree(G, float_depth)
     statistics['nodes'] = get_nodes_number(G)
@@ -81,6 +84,7 @@ def extract_metrics_graph(G, float_depth=4) -> dict:
     statistics['diameter'] = get_diameter(G, float_depth)
 
     return statistics
+
 
 def get_nodes_number(graph):
     return nx.number_of_nodes(graph)
@@ -120,24 +124,26 @@ def get_average_path_length(graph, float_depth):
 def get_diameter(graph, float_depth):
     return round(nx.diameter(graph), float_depth)
 
+
 def get_clustering_coefficient(graph):
-    return nx.clustering(graph, weight = None)
+    return nx.clustering(graph, weight=None)
 
 
 def get_betweenness(graph):
-    return nx.betweenness_centrality(graph, weight = None)
+    return nx.betweenness_centrality(graph, weight=None)
 
 
 # centrality of a node based on the centrality of its neighbors. If M is the adjency matrix of the graph,
 # we compute the eigenvalues and vectors of that matrix.
 def get_eigenvector_centrality(graph):
-    return nx.eigenvector_centrality(graph, weight = None)
+    return nx.eigenvector_centrality(graph, weight=None)
 
 
 # ranking of the nodes in the graph G based on the structure of the incoming links.
 # It was originally designed as an algorithm to rank web pages
 def get_pagerank(graph):
-    return nx.pagerank(graph, weight = None)
+    return nx.pagerank(graph, weight=None)
+
 
 # returns a dictionary of dictionaries. Key: name of airport and value, which is a dictionary with key airport value
 # distance with the first key.
@@ -155,5 +161,5 @@ def get_distances(graph):
 # uncomment for debugging purposes
 # _ = degree_histogram(nx.read_pajek('../../out/networks/tech-routers-rf.net'), plot=True, log=False)
 # a = extract_metrics(nx.read_pajek('../../out/networks/test.net').to_undirected())
-#a = extract_metrics_graph(nx.read_pajek('../../out/networks/huge.net'))
-#print()
+# a = extract_metrics_graph(nx.read_pajek('../../out/networks/huge.net'))
+# print()

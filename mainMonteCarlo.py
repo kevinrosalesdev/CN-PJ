@@ -26,7 +26,7 @@ if __name__ == '__main__':
     # Input
     G = nx.Graph(nx.read_pajek(graph_path))
     beta_random = 0.0
-    n_rep = 1
+    n_rep = 50
     initial_function = 'random'
     initial_ratio = 0.1
     # protection_policy = 'mix'
