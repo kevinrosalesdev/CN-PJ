@@ -77,5 +77,5 @@ if __name__ == '__main__':
                 save_results(prefix_save, 'extended_results', extended_results)
                 results_all_mu.append(results)
 
-            title = f'simulations/monteCarlo/{network_file_name}/{protection_policy}/tech-routers-rf_pr{protection_ratio}.png'
+            title = f'simulations/monteCarlo/{network_file_name}/{protection_policy}/{network_file_name}_pr{protection_ratio}.png'
             plot_r_b(betas, results_all_mu, mus, title)
