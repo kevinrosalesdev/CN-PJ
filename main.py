@@ -71,7 +71,8 @@ if __name__ == '__main__':
     G = nx.Graph(nx.read_pajek('out/networks/tech-routers-rf.net'))
     b = np.linspace(0, 1, 51)
     mu = [0.1, 0.5, 0.9]
-    protected_nodes = strategies.get_nodes(G, ratio=0.05, policy='hubs')
-    mmca = MMCA(b=b, mu=mu, random_infection=0.01, rho0=0.1, t_max=500, t_trans=400)
-    mean_rho_mmca = mmca.simulate(G, protected_nodes=[])
-    plotter.plot_r_b(b, mean_rho_mmca, mu_list=mu, title=f"simulations/mmca-tech-routers-rf-non-protected.png")
+    protected_nodes = strategies.get_nodes(G, ratio=0.05, policy='betweenness')
+    mmca = MMCA(b=b, mu=mu, random_infection=0.01, rho0=0.3, t_max=500, t_trans=400)
+    mean_rho_mmca = mmca.simulate(G, protected_nodes=protected_nodes)
+    plotter.plot_r_b(b, mean_rho_mmca, mu_list=mu,
+                     title=f"simulations/mmca-tech-routers-rf-0.05-betweenness-protected-moreattack.png")

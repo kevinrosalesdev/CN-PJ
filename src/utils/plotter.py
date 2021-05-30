@@ -19,7 +19,7 @@ def plot_network_status(array_of_status_in_each_time, G, title="", show=False):
                 color_map.append('green')
             else:
                 color_map.append('black')  # state: 3 - protected
-        nx.draw(G, node_color=color_map, with_labels=True)
+        nx.draw(G, pos=nx.kamada_kawai_layout(G, weight=None), node_color=color_map, node_size=5, width=0.25, with_labels=False)
         plt.savefig(f"out/networks_states/STATUS-(t={idx})-{title}.png")
         if show:
             plt.show()
@@ -58,6 +58,7 @@ def plot_r_b(b, rho, mu_list, title="", show=False):
     plt.ylim(0, 1)
     plt.legend()
     plt.title(title)
+    plt.ylim((0, 1))
     plt.savefig(f"out/{title}")
     if show:
         plt.show()
